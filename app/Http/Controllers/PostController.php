@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
-class ArticleController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        return 'Index des articles';
+        return view('articles.index');
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -47,7 +47,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('articles.show')->with(compact('id'));
     }
 
     /**
@@ -58,7 +58,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('articles.edit')->with(['id' => $id]);
     }
 
     /**
