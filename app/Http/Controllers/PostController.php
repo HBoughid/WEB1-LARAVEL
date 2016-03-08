@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,7 +16,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('articles.index');
+        $posts = Post::all();
+
+        return view('articles.index')->with(compact('posts'));
     }
 
     /**
@@ -36,7 +39,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $post = new Post;
+
+        $post->user_id  = 10;
+        $post->title    = $request->title;
+        $post->content  = $request->content;
+
+        $post->save();
+
+        return redirect()
+            ->route('articles.show', $post->id)
+            ->with(compact('post'));
+
+
     }
 
     /**
@@ -47,7 +62,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        return view('articles.show')->with(compact('id'));
+        $post = Post::find($id);
+
+        return view('articles.show')->with(compact('post'));
     }
 
     /**
