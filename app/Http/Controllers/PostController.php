@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidatePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -40,8 +41,21 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidatePostRequest $request)
     {
+        /*
+        $this->validate($request, [
+            'title' => 'required|min:10',
+            'content' => 'required|min:10',
+            'user_id' => 'required|exists:users,id'
+        ], [
+            'title.required' => 'Le titre obligatoire',
+            'title.min'      => 'Le titre doit être > 10 caractères',
+            'content.required' => 'La decription obligatoire',
+            'content.min'      => 'La description doit être > 10 caractères',
+        ]);
+        */
+
         $post = new Post;
 
         $post->user_id  = $request->user_id;
@@ -89,7 +103,7 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidatePostRequest $request, $id)
     {
         $post = Post::find($id);
 
