@@ -1,25 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-    <form action="{{route('articles.store')}}" method="POST">
-        {{csrf_field()}}
-
+    <h1>Ajouter un article</h1>
+    {!! Form::open(['route' => 'articles.store', 'method' => 'POST']) !!}
         <div class="form-group">
-            <select name="user_id" class="form-control">
-                @foreach($users as $user)
-                    <option value="{{$user->id}}">{{$user->name}}</option>
-                @endforeach
-            </select>
+            {!! Form::select('user_id', $users, null, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            <input type="text" name="title" class="form-control">
+            {!! Form::text('title', null, [
+                'class' => 'form-control',
+                'placeholder' => 'Nom de l\'article'
+            ]) !!}
         </div>
 
         <div class="form-group">
-            <textarea name="content" class="form-control"></textarea>
+            {!! Form::textarea('content', null, ['class' => 'form-control']) !!}
         </div>
 
-        <input type="submit">
-    </form>    
+        {!! Form::submit('Envoyer', ['class' => 'btn btn-block']) !!}
+
+    {!! Form::close() !!}
 @endsection

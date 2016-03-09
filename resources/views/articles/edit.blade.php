@@ -2,26 +2,23 @@
 
 @section('content')
     <h1>Edit de l'article n'° {{ $post->id }}</h1>
-    <form action="{{route('articles.update', $post->id)}}" method="POST">
-        {{csrf_field()}}
-        <input type="hidden" name="_method" value="PUT">
+    {!! Form::open(['route' => ['articles.update', $post->id], 'method' => 'PUT']) !!}
         <div class="form-group">
-            <select name="user_id" class="form-control">
-                @foreach($users as $user)
-                     <option {{ ($user->id == $post->user_id) ? 'selected="selected"' : '' }} value="{{$user->id}}">{{$user->name}}</option>
-                @endforeach
-            </select>
+            {!! Form::select('user_id', $users, $post->user_id, ['class' => 'form-control']) !!}
         </div>
 
         <div class="form-group">
-            <input type="text" name="title" value="{{$post->title}}" class="form-control">
+            {!! Form::text('title', $post->title, [
+                'class' => 'form-control',
+                'placeholder' => 'Nom de l\'article'
+            ]) !!}
         </div>
 
         <div class="form-group">
-            <textarea name="content" class="form-control">{{$post->content}}</textarea>
+            {!! Form::textarea('content', $post->content, ['class' => 'form-control']) !!}
         </div>
 
-        <input type="submit">
-    </form>
+        {!! Form::submit('Envoyer', ['class' => 'btn btn-block']) !!}
 
+    {!! Form::close() !!}
 @endsection
