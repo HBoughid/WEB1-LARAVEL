@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -28,7 +29,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        $users = User::all();
+
+        return view('articles.create')->with(compact('users'));
     }
 
     /**
@@ -41,7 +44,7 @@ class PostController extends Controller
     {
         $post = new Post;
 
-        $post->user_id  = 10;
+        $post->user_id  = $request->user_id;
         $post->title    = $request->title;
         $post->content  = $request->content;
 
@@ -50,8 +53,6 @@ class PostController extends Controller
         return redirect()
             ->route('articles.show', $post->id)
             ->with(compact('post'));
-
-
     }
 
     /**
@@ -75,7 +76,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('articles.edit')->with(['id' => $id]);
+        $post   = Post::find($id);
+        $users  = User::all();
+
+        return view('articles.edit')->with(compact('post', 'users'));
     }
 
     /**
@@ -87,7 +91,16 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+
+        $post->title   = $request->title;
+        $post->content = $request->content;
+        $post->user_id = $request->user_id;
+
+        $post->save();
+
+        return redirect()->route('articles.show', $post->id);
+
     }
 
     /**
@@ -98,6 +111,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+
+
+        return redirect()->route('articles.index');
     }
 }
